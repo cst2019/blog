@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments::head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" >
+</head>
+<body>
+<!--导航-->
+<nav th:replace="_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini">
+    <div class="ui container">
+        <div class="ui inverted secondary menu ">
+            <h2 class="ui teal header item">Blog</h2>
+            <a href="#" class="item"><i class="home icon"></i> 首页</a>
+            <a href="#" class="item"><i class="idea icon"></i> 分类</a>
+            <a href="#" class="item"><i class="tags icon"></i>标题</a>
+            <a href="#" class="item"><i class="info icon"></i>关于我</a>
+            <div class="right item">
+                <div class=" ui icon inverted transparent  input">
+                    <input type="text" placeholder="Search....">
+                    <i class="search link  icon"></i>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div  class="m-container  m-padded-tb-big">
+<form class="ui form segment m-padded-tt" method="post" action="#" th:action="@{/regristry}">
+
+    <div class="field">
+        <label>邮箱</label>
+        <input placeholder="请输入邮箱账号" name="email" type="text" style="width: 300px;">
+    </div>
+    <div class="field">
+        <label>手机号码</label>
+        <input placeholder="请输入手机号码" name="telephone" type="text"  style="width: 300px;">
+    </div>
+
+    <div class="field">
+        <label>登录用户名</label>
+        <input placeholder="请输入登录用户名" name="username" type="text"  style="width: 300px;" >
+       </div>
+    <div class="field">
+        <label>昵称</label>
+        <input placeholder="请输入用户昵称" name="nickname" type="text"  style="width: 300px;">
+    </div>
+    <div class="field" style="width: 300px;">
+        <label>密码</label>
+        <input name="password" type="password">
+    </div>
+    <div class="field" style="width: 300px;">
+        <label>确认密码</label>
+        <input name="repassword" type="password">
+    </div>
+    <div class="field">
+        <label>性别</label>
+        <div class="ui selection dropdown"  style="width: 300px;">
+            <input name="gender" type="hidden" value="0">
+            <div class="default text">性别</div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+                <div class="item" data-value="0">男</div>
+                <div class="item" data-value="1">女</div>
+            </div>
+        </div>
+    </div>
+    <div class="inline field">
+        <div class="ui checkbox">
+            <input type="checkbox" id="terms" name="terms" class="seleAccountCheck" onclick="seleAll(this)">
+
+            <label>我同意并愿意遵守<a href="yhxy.html" th:href="@{/yh}" target="_blank">用户协议</a></label>
+        </div>
+    </div>
+    <input name="term" type="hidden">
+    <div class="ui blue submit button">注册</div>
+    <div class="ui error mini message"></div>
+    <div class="ui mini red  message" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></div>
+
+</form>
+</div>
+
+<br>
+<br>
+<footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+    <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <img src="../static/images/wechat.jpg" th:src="@{/images/wechat.jpg}" class="ui rounded image" alt="" style="width: 110px">
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced " >最新博客</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+                    <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+                    <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">联系我</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item m-text-thin">Email：lirenmi@163.com</a>
+                    <a href="#" class="item m-text-thin">QQ：865729312</a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">Blog</h4>
+                <p class="m-text-thin m-text-spaced m-opacity-mini">这是我的个人博客、会分享关于编程、写作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2016 - 2017 Lirenmi Designed by Lirenmi</p>
+    </div>
+
+</footer>
+
+<!-- /*/ <th:block th:replace="_fragments :: script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<!-- /*/</th:block>/*/-->
+
+
+<script  language="JavaScript">
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on : 'hover'
+    });
+    var a=0;
+
+    $('.ui.form').form({
+        fields : {
+            email : {
+                identifier : 'email',
+                rules: [{
+                    type : 'empty',
+                    prompt: '邮箱不能为空'
+                },
+                    {
+                        type:'email',
+                        optional:true,
+                        prompt: "邮箱格式不正确"
+                    }]
+            },
+            telephone : {
+                identifier : 'telephone',
+                rules: [{
+                    type : 'number',
+                    prompt: '手机号码只允许数字'
+                },
+                    {
+                        type:'exactLength[11]',
+                        prompt: "手机号码长度不正确"
+                    }]
+            },
+            username : {
+                identifier : 'username',
+                rules: [{
+                    type : 'empty',
+                    prompt: '用户名不能为空'
+                },{
+                    type : 'minLength[5]',
+                    prompt: '用户名不能少于5个字符'
+                },{
+                    type : 'maxLength[15]',
+                    prompt: '用户名不能多于15个字符'
+                }]
+            },
+            nickname : {
+                identifier : 'nickname',
+                rules: [{
+                    type : 'empty',
+                    prompt: '昵称不能为空'
+                },{
+                    type : 'minLength[5]',
+                    prompt: '昵称不能少于5个字符'
+                },{
+                    type : 'maxLength[15]',
+                    prompt: '昵称不能多于15个字符'
+                }]
+            },
+            password : {
+                identifier : 'password',
+                rules: [{
+                    type : 'empty',
+                    prompt: '密码不能为空'
+                },
+                    {
+                        type   : 'minLength[6]',
+                        prompt : '密码长度大于6位'
+                    }]
+            },
+            repassword:{
+                identifier : 'repassword',
+                rules: [{
+                    type : 'empty',
+                    prompt: '请再输入一次密码'
+                },  {
+                    type   : 'match[password]',
+                    prompt : '两次密码输入不一致'
+                }]
+            },
+            term:{
+                identifier : 'term',
+                rules: [{
+                    type : 'empty',
+                    prompt: '请勾选同意用户协议'
+                }]
+            }
+        }
+    });
+
+    // 确认协议
+    function seleAll(obj) {
+        if(a%2==1){
+            $("[name='term']").attr("value","");
+
+        }else{
+            $("[name='term']").attr("value","1");
+        }
+        a=a+1;
+    }
+
+</script>
+</body>
+</html>

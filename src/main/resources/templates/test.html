@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax图片上传</title>
+</head>
+<body>
+<form action="imageUpload" method="post" enctype="multipart/form-data">
+    <input type="file" name="fileName" id="filename" accept="image/png, image/jpeg, image/jpg" >
+    <input type="button" id="submitBtn" onclick="checkSubmit()" value="上传"/>
+</form>
+
+</body>
+
+
+
+
+<!-- /*/ <th:block th:replace="_fragments :: script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<!-- /*/</th:block>/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+
+<script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+<script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+<script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/lib/qrcode/qrcode.min.js}"></script>
+<script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+<script src="../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+<script type="text/javascript">
+
+
+
+    /*上传图片
+   详细参考链接：https://www.cnblogs.com/qiumingcheng/p/6854933.html
+   1.processData设置为false。因为data值是FormData对象，不需要对数据做处理。
+   2.<form>标签添加enctype="multipart/form-data"属性。
+   3.cache设置为false，上传文件不需要缓存。
+   4.contentType设置为false，不设置contentType值，因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。
+   */
+    function checkSubmit() {
+        var formdata=new FormData();
+        formdata.append('fileName',$('#filename').get(0).files[0]);
+        $.ajax({
+            async: false,
+            type: 'POST',
+            url: "/imageUpload",
+            dataType: 'json',
+            data: formdata,
+            contentType:false,//ajax上传图片需要添加
+            processData:false,//ajax上传图片需要添加
+
+        })
+    }
+</script>
+</html>

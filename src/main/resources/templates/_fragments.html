@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:replace="${title}">博客详情</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/lib/editormd/css/editormd.min.css" th:href="@{/lib/editormd/css/editormd.min.css}">
+    <link rel="stylesheet" href="../static/css/typo.css" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}">
+    <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<nav th:fragment="menu(n)" class="ui  attached segment m-padded-tb-mini">
+    <div class="ui container">
+        <div class="ui  secondary menu ">
+            <h2 class="ui red header item">寻知网</h2>
+            <a href="#" class="item" th:href="@{/index}" th:classappend="${n==1} ? 'active' : ' '"><i class="home icon"></i> 首页</a>
+            <a href="#" class="item" th:href="@{/types/-1}" th:classappend="${n==2} ? 'active' : ' '"><i class="idea icon"></i> 分类</a>
+            <a href="#" class="item" th:href="@{/tags/-1}" th:classappend="${n==3} ? 'active' : ' '"><i class="tags icon"></i> 标签</a>
+            <a href="#" class="item" th:href="@{/archives}" th:classappend="${n==4} ? 'active' : ' '"><i class="tags icon"></i> 归档</a>
+
+            <div class="right item">
+
+                <form name="search" action="#" th:action="@{/search}" target="_blank" method="post">
+                <div class=" ui icon transparent  input">
+                    <input type="text" name="query" placeholder="Search...." th:value="${query}">
+                    <i onclick="document.forms['search'].submit()" class="search link  icon"></i>
+
+                </div>
+                </form>
+            </div>
+            <div class="right m-item m-mobile-hide menu" th:if="${session.user}!=null">
+                <a href="#" class="item" th:href="@{/blogs/input}" th:classappend="${n==6} ? 'active' : ' '"><i class="write icon"></i>写博客</a>
+                <a href="#" class="item" th:href="@{/mycomments}" th:classappend="${n==6} ? 'active' : ' '"><i class="alarm icon"></i>消息<span class="mini ui red circular label" th:text="${#arrays.length(newcom)}" th:if="${#arrays.length(newcom)}==0">6</span></a>
+<!--                <form id="_form" method="post" action="../blogs/input">-->
+
+<!--                    <a href="#" class="item" onclick="document.getElementById('_form').submit();"th:classappend="${n==6} ? 'active' : ' '"><i class="write icon"></i>写博客</a>-->
+<!--                </form>-->
+                <div class="ui dropdown  item">
+                    <div class="text">
+                        <img class="ui avatar image" src="@{${session.user.avatar}}" th:src="@{${session.user.avatar}}">
+                        <span th:text="${session.user.nickname}">xx</span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item">
+                            <a href="#" th:href="@{/about}" class="item">个人信息</a>
+                        </div>
+                        <div class="item">
+                            <a href="#" th:href="@{/selfblogs}" class="item">我的博客</a>
+                        </div>
+                        <div class="item">
+                            <a href="#" th:href="@{/followingUser}" class="item">我的关注</a>
+                        </div>
+                        <div class="item">
+                            <a href="#" th:href="@{/likedBlog}" class="item">已赞博客</a>
+                        </div>
+                        <div class="item">
+                            <a href="#" th:href="@{/logout}" class="item">注销</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="right m-item m-mobile-hide menu" th:if="${session.user}==null">
+                <a href="#" class="item" th:href="@{/}" >登录</a>
+                <a href="#" class="item red" th:href="@{/registers}" >没有账号？注册</a>
+            </div>
+            </div>
+    </div>
+</nav>
+
+
+
+
+<!--底部footer-->
+<footer th:fragment="footer" class="ui  vertical segment m-padded-tb-massive">
+    <div class="ui center aligned container">
+        <div class="ui  divided stackable grid">
+            <div class="four wide column">
+                <div class="ui  link list">
+                    <div class="item">
+                        <img src="../static/images/wechat.jpg" th:src="@{/images/wechat.jpg}" class="ui rounded image" alt="" style="width: 110px">
+                    </div>
+                </div>
+            </div>
+            <div class="four wide column">
+                <h4 class="ui  header m-text-thin m-text-spaced ">联系我</h4>
+                <div class="ui  link list">
+                    <a href="#" class="item m-text-thin">Email：863190937@qq.com</a>
+                    <a href="#" class="item m-text-thin">QQ：863190937</a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui  header m-text-thin m-text-spaced ">站长寄语</h4>
+                <p class="m-text-thin m-text-spaced m-opacity-mini">希望各位博友分享关于编程、写作、思考相关的任何内容，可以给来到这儿的人有所帮助...</p>
+            </div>
+        </div>
+        <div class="ui  section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2019 - 2020 寻知网 Designed by cst</p>
+    </div>
+
+</footer>
+
+
+<th:block th:fragment="script">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+
+    <script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+    <script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+    <script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/lib/qrcode/qrcode.min.js}"></script>
+    <script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+    <script src="../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+    <script> $('.ui.dropdown').dropdown({
+        on : 'hover'
+    });</script>
+</th:block>
+
+</body>
+</html>

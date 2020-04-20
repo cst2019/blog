@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="_fragments :: head(~{::title})">
@@ -68,18 +69,15 @@
       </div>
       <div class="required field">
 
-        <div class="ui left labeled input">
+        <div class="ui left labeled input" style="width:500px;">
           <label class="ui teal basic label">首图</label>
+          <input type="hidden"  name="firstPicture" placeholder="首图引用地址">
 
-
-          <input type="text" name="firstPicture" th:value="${firstPicture}" placeholder="首图引用地址">
+          <input type="file" name="fileName" id="filename" accept="image/png, image/jpeg, image/jpg">
+          <button type="button" id="sc-btn" class="ui button">上传</button>
 
 
         </div>
-      </div>
-      <div class="required field">
-      <input type="file" name="fileName" id="filename" accept="image/png, image/jpeg, image/jpg" >
-      <button type="button" id="sc-btn" class="ui button">上传</button>
       </div>
       <div class="required field">
         <div id="md-content" style="z-index: 1 !important;">
@@ -91,18 +89,18 @@
 
       <div class="two fields">
         <div class="required field">
-        <div class="ui left labeled action input">
-          <label class="ui compact teal basic label">分类</label>
-          <div class="ui fluid selection dropdown">
-            <input type="hidden" name="type.id" th:value="*{type}!=null ? *{type.id}">
-            <i class="dropdown icon"></i>
-            <div class="default text">分类</div>
-            <div class="menu">
-              <div th:each="type : ${types}" class="item" data-value="1" th:data-value="${type.id}" th:text="${type.name}">错误日志</div>
+          <div class="ui left labeled action input">
+            <label class="ui compact teal basic label">分类</label>
+            <div class="ui fluid selection dropdown">
+              <input type="hidden" name="type.id" th:value="*{type}!=null ? *{type.id}">
+              <i class="dropdown icon"></i>
+              <div class="default text">分类</div>
+              <div class="menu">
+                <div th:each="type : ${types}" class="item" data-value="1" th:data-value="${type.id}" th:text="${type.name}">错误日志</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
         <div class="field">
           <div class="ui left labeled action input">
             <label class="ui compact teal basic label">标签</label>
@@ -152,8 +150,8 @@
 
     <div  >
 
+    </div>
   </div>
-</div>
 </div>
 <br>
 <br>
@@ -225,9 +223,13 @@
 
 
   $('#publish-btn').click(function () {
-    $('[name="published"]').val(true);
-    $('[name="recommened"]').val(false);
-    $('#blog-form').submit();
+    if($('[name="title"]').val()==''){
+      alert('请输入博客标题');
+    }
+    else if($('[name="firstPicture"]').val()==''){
+      alert('请先上传博客首图');
+    }
+
   });
 
   $('#sc-btn').click(function () {
@@ -235,7 +237,6 @@
     $('[name="recommened"]').val(false);
     $('#blog-form').submit();
   });
-
 
 </script>
 </body>

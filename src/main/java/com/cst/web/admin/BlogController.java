@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 public class BlogController {
     private static final String INPUT="admin/blogs-input";
     private static final String LIST="admin/blogs";
-    private static final String REDIRECT_LIST="redirect:/admin/blogs";
+    private static final String REDIRECT_LIST="redirect:/admin/blogss";
 
     @Autowired
     private BlogService blogService;
@@ -81,8 +81,8 @@ public class BlogController {
      * @param model
      * @return
      */
-    @GetMapping("/recom/{id}")
-    public String isCom(@PathVariable Long id,
+    @GetMapping("/recom/{id}/{page}")
+    public String isCom(@PathVariable Long id,@PathVariable Long page,
                            Model model){
         Blog blog=blogService.getBlog(id);
         blog.setRecommened(!blog.isRecommened());
@@ -90,15 +90,15 @@ public class BlogController {
 //        model.addAttribute("blog",blog);
 //        String str="admin/blogs :: aa";
 //        System.out.println(str);
-        return REDIRECT_LIST;
+        return REDIRECT_LIST+"?page="+page;
     }
 
-    @GetMapping("/blogs/{id}/delete")
-    public String delete(@PathVariable Long id,
+    @GetMapping("/blogs/{id}/{page}/delete")
+    public String delete(@PathVariable Long id,@PathVariable Long page,
                          Model model){
         blogService.deleteBlog(id);
         model.addAttribute("message","删除成功");
-        return REDIRECT_LIST;
+        return REDIRECT_LIST+"?page="+page;
     }
 
     private void setTypeAndTag(Model model){

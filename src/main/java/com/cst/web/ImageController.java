@@ -9,6 +9,7 @@ package com.cst.web;
  */
 import com.cst.po.Blog;
 import com.cst.po.User;
+import com.cst.service.CommentService;
 import com.cst.service.TagService;
 import com.cst.service.TypeService;
 import com.cst.service.UserService;
@@ -38,6 +39,14 @@ public class ImageController {
 
     @Autowired
     TagService tagService;
+    @Autowired
+    CommentService commentService;
+    private  void setNewCom(Model model,HttpSession session){
+
+        User user= (User) session.getAttribute("user");
+        if(user==null)return;
+        model.addAttribute("newcom",commentService.getNewCommentByUser(user));
+    }
     /**上传地址*/
     private final String filePath="/Users/cst/Downloads/blog/src/main/resources/static/images/";
 
@@ -54,8 +63,16 @@ public class ImageController {
             attributes.addFlashAttribute("message","您还没有登录，请先登录");
             return "redirect:/";
         }
+        if(file.getOriginalFilename()==""){
+            attributes.addFlashAttribute("message","请不要上传空文件");
+            return "redirect:/about";
+        }
         // 获取上传文件名
+        int i=(int)(Math.random()*900)+100;
         String filename = file.getOriginalFilename();
+        String st=filename.substring(0, filename.length() - 5);
+        String end=filename.substring(filename.length() - 5, filename.length());
+        filename=st+i+end;
         // 定义上传文件保存路径
         String path = filePath;
         // 新建文件
@@ -69,19 +86,25 @@ public class ImageController {
             file.transferTo(new File(path + File.separator + filename));
         } catch (IOException e) {
             e.printStackTrace();
+            attributes.addFlashAttribute("message","上传失败");
+            return "redirect:/about";
         }
         userService.updateAvatar(user.getId(),"/images/"+filename);
         user=userService.getUser(user.getId());
-        model.addAttribute("us",user);
         session.setAttribute("user",user);
-        return "about";
+        attributes.addFlashAttribute("message","上传成功");
+        return "redirect:/about";
     }
 
     // 执行上传
     @PostMapping("/upload")
-    public String upload(@RequestParam("fileName") MultipartFile file, Blog blog, Model model) {
+    public String upload(@RequestParam("fileName") MultipartFile file, Blog blog, Model model, HttpSession session) {
         // 获取上传文件名
+        int i=(int)(Math.random()*900)+100;
         String filename = file.getOriginalFilename();
+        String st=filename.substring(0, filename.length() - 5);
+        String end=filename.substring(filename.length() - 5, filename.length());
+        filename=st+i+end;
         // 定义上传文件保存路径
         String path = filePath;
         // 新建文件
@@ -99,6 +122,7 @@ public class ImageController {
         String firstPicture="/images/"+filename;
         blog.setFirstPicture(firstPicture);
         setTypeAndTag(model);
+        setNewCom(model,session);
    model.addAttribute("blog", blog);
         return "blogsinputs";
     }

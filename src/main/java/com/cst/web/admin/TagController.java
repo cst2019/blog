@@ -94,15 +94,15 @@ public class TagController {
     }
 
 
-    @GetMapping("/tags/{id}/delete")
-    public String delete(@PathVariable Long id,RedirectAttributes attributes){
+    @GetMapping("/tags/{id}/{page}/delete")
+    public String delete(@PathVariable Long id,@PathVariable Long page,RedirectAttributes attributes){
         Tag dbTag=tagService.getTag(id);
         if(dbTag==null){
             attributes.addFlashAttribute("message","不存在该类别");
         }
         tagService.deleteTag(id);
         attributes.addFlashAttribute("message","删除成功");
-        return "redirect:/admin/tags";
+        return "redirect:/admin/tags?page="+page;
     }
 
 }

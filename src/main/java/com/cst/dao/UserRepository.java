@@ -26,4 +26,6 @@ public interface UserRepository  extends JpaRepository<User,Long> {
 
     @Query("select u.following from User u where u.id=?1")
     Page<User> findFollowed(Long userId, Pageable pageable);
+
+
 }

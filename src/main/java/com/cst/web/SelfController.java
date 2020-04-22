@@ -115,15 +115,23 @@ public class SelfController {
     }
     @GetMapping("/blogs/{id}/delete")
     public String delete(@PathVariable Long id,
-                         Model model){
-        blogService.deleteBlog(id);
-        return "redirect:/selfblogs";
+                         Model model,RedirectAttributes attributes){
+        try {
+            blogService.deleteBlog(id);
+            attributes.addFlashAttribute("message","删除成功");
+            return "redirect:/selfblogs";
+        } catch (Exception e) {
+            e.printStackTrace();
+            attributes.addFlashAttribute("message","删除失败");
+            return "redirect:/selfblogs";
+        }
     }
-    @GetMapping("/blogs/{id}/comment")
-    public String comment(@PathVariable Long id,
-                         Model model){
+    @GetMapping("/blogs/{id}/{page}/comment")
+    public String comment(@PathVariable Long id,@PathVariable Long page,
+                         Model model,RedirectAttributes attributes){
         blogService.allowComment(id);
-        return "redirect:/selfblogs";
+
+        return "redirect:/selfblogs?page="+page;
     }
     @GetMapping("/archives")
     public String archives(Model model,HttpSession session,RedirectAttributes attributes){

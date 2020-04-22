@@ -83,10 +83,10 @@
                         <br>
                         <br>
                         <div class="item">
-                          <a href="#" th:href="@{/blogs/{id}/comment(id=${blog.id})}" class="ui mini red basic button"><span th:if="!${blog.commentabled}">开启评论</span><span th:if="${blog.commentabled}">关闭评论</span></a>
+                          <a href="#" th:href="@{/blogs/{id}/{page}/comment(page=${page.number},id=${blog.id})}" class="ui mini red basic button"><span th:if="!${blog.commentabled}">开启评论</span><span th:if="${blog.commentabled}">关闭评论</span></a>
                         </div>
                         <div class="item">
-                          <a href="#" th:href="@{/blogs/{id}/delete(id=${blog.id})}" class="ui mini red basic button">删除</a>
+                          <a href="#" th:href="@{/blogs/{id}/{page}/delete(page=${page.number},id=${blog.id})}" class="ui mini red basic button">删除</a>
                         </div>
 
                       </div>

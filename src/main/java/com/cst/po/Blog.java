@@ -65,6 +65,8 @@ public class Blog {
     @Transient
     private String tagIds;
 
+
+
     @Transient
     private boolean isLiked;
 

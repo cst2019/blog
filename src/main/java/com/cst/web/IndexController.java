@@ -3,10 +3,7 @@ package com.cst.web;
 import com.cst.po.Blog;
 import com.cst.po.Comment;
 import com.cst.po.User;
-import com.cst.service.BlogService;
-import com.cst.service.CommentService;
-import com.cst.service.TagService;
-import com.cst.service.TypeService;
+import com.cst.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,6 +32,9 @@ public class IndexController {
 
     @Autowired
     CommentService commentService;
+
+    @Autowired
+    UserService userService;
     private  void setNewCom(Model model,HttpSession session){
 
         User user= (User) session.getAttribute("user");
@@ -92,6 +92,46 @@ public class IndexController {
         model.addAttribute("query",query);
         return "search";
     }
+    @GetMapping("/search1/{query}")
+    public String search1(@PageableDefault(size=5,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,
+                          @PathVariable String query, Model model,HttpSession session){
+        setNewCom(model, session);
+        model.addAttribute("page",blogService.listBlog("%"+query+"%",pageable));
+        model.addAttribute("query",query);
+        return "search";
+    }
+
+    /**
+     * 个人空间
+     * @param id
+     * @param bid
+     * @param model
+     * @param session
+     * @return
+     */
+    @GetMapping("/selfzon/{id}")
+    public String selfzon(@PageableDefault(size=3,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,
+                          @PathVariable Long id,
+                        Model model,HttpSession session){
+        User user= (User) session.getAttribute("user");//当前用户
+        boolean isFollow=false;
+      User us= userService.getUser(id);  //查看的用户
+        //判断是否已经关注用户
+        if(user!=null){
+            List<User> followedList=us.getFollowed();
+            for(User c:followedList){
+                if(c.getId()==user.getId()){
+                    isFollow=true;
+                }
+            }
+        }
+        setNewCom(model,session);
+        model.addAttribute("isFollow",isFollow);
+        model.addAttribute("us",us);
+        model.addAttribute("page",blogService.listBlog(pageable,us));
+        return "selfzone";
+    }
+
     @GetMapping("/blog/{id}")
     public String blog(@PathVariable Long id, Model model, HttpSession session){
         User user= (User) session.getAttribute("user");
@@ -105,11 +145,11 @@ public class IndexController {
             }
         }
         List<User> followedList=blog.getUser().getFollowed();
-        for(User c:followedList){
-            if(c.getId()==user.getId()){
-                isFollow=true;
+            for(User c:followedList){
+                if(c.getId()==user.getId()){
+                    isFollow=true;
+                }
             }
-        }
         }
         setNewCom(model, session);
         model.addAttribute("blog",blog);

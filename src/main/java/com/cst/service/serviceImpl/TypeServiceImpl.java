@@ -1,8 +1,10 @@
 package com.cst.service.serviceImpl;
 
+import com.cst.dao.BlogRepository;
 import com.cst.dao.TypeRepository;
 import com.cst.exception.NotFoundException;
 import com.cst.po.Type;
+import com.cst.service.BlogService;
 import com.cst.service.TypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class TypeServiceImpl implements TypeService {
 
     @Autowired
     TypeRepository typeRepository;
+    @Autowired
+    BlogRepository blogRepository;
     @Transactional
     @Override
     public Type saveType(Type type) {
@@ -74,6 +78,7 @@ public class TypeServiceImpl implements TypeService {
     @Transactional
     @Override
     public void deleteType(Long id) {
+        blogRepository.deleteBlogsByTypeId(id);
         typeRepository.deleteById(id);
     }
 }

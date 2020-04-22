@@ -1,5 +1,6 @@
 package com.cst.service;
 
+import com.cst.po.Blog;
 import com.cst.po.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,8 @@ public interface UserService {
     User checkUser(String username,String password);
 
     User getUser(Long userId);
+
+    Page<User> listUser(Pageable pageable);
 
     void updateAvatar(Long id,String avatar);
 

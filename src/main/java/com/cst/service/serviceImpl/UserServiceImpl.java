@@ -29,6 +29,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<User> listUser(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
     public void updateAvatar(Long id, String avatar) {
        userRepository.updateAvatar(id, avatar);
     }

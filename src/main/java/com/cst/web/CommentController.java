@@ -5,6 +5,7 @@ import com.cst.po.Comment;
 import com.cst.po.User;
 import com.cst.service.BlogService;
 import com.cst.service.CommentService;
+import com.cst.util.IkAnalyzerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -77,12 +78,17 @@ public class CommentController {
             attributes.addFlashAttribute("message","您还没有登录，请先登录");
             return "redirect:/";
         }
+        if(IkAnalyzerUtil.getIk(comment.getContent())){
+            attributes.addFlashAttribute("message","评论提交失败，请不要在本站发表不当言论");
+            return "redirect:/comments/"+blogId;
+        }
         comment.setUser(user);
         comment.setBlog(blogService.getBlog(blogId));
         comment.setAvatar(user.getAvatar());
         comment.setEmail(user.getEmail());
         comment.setNickname(user.getNickname());
         commentService.saveComment(comment);
+        attributes.addFlashAttribute("message","评论提交成功");
         return "redirect:/comments/"+blogId;
     }
     /**
@@ -92,8 +98,8 @@ public class CommentController {
      * @param attributes
      * @return
      */
-    @PostMapping("/mycomments")
-    public String post2(Comment comment,
+    @PostMapping("/mcomments")
+    public String post2(Long page,Comment comment,
                        HttpSession session,
                        RedirectAttributes attributes){
         Long blogId=comment.getBlog().getId();
@@ -103,13 +109,19 @@ public class CommentController {
             attributes.addFlashAttribute("message","您还没有登录，请先登录");
             return "redirect:/";
         }
+        if(IkAnalyzerUtil.getIk(comment.getContent())){
+            attributes.addFlashAttribute("message","回复失败，请不要在本站发表不当言论");
+            return "redirect:/mycomments?page="+page;
+        }
         comment.setUser(user);
         comment.setBlog(blogService.getBlog(blogId));
         comment.setAvatar(user.getAvatar());
         comment.setEmail(user.getEmail());
         comment.setNickname(user.getNickname());
         commentService.saveComment(comment);
-        return "redirect:/mycomments";
+        attributes.addFlashAttribute("message","回复成功");
+
+        return "redirect:/mycomments?page="+page;
     }
     /**
      * 展示消息

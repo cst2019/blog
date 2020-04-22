@@ -50,4 +50,8 @@ public interface BlogRepository extends JpaRepository<Blog,Long>, JpaSpecificati
 
     Long countBlogByUser(User user);
 
+    @Transactional
+    void deleteBlogsByTypeId(Long typeId);
+
+
 }

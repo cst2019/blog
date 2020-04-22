@@ -35,7 +35,7 @@
             </div>
             <div class="right m-item m-mobile-hide menu" th:if="${session.user}!=null">
                 <a href="#" class="item" th:href="@{/blogs/input}" th:classappend="${n==6} ? 'active' : ' '"><i class="write icon"></i>写博客</a>
-                <a href="#" class="item" th:href="@{/mycomments}" th:classappend="${n==6} ? 'active' : ' '"><i class="alarm icon"></i>消息<span class="mini ui red circular label" th:text="${#arrays.length(newcom)}" th:if="${#arrays.length(newcom)}==0">6</span></a>
+                <a href="#" class="item" th:href="@{/mycomments}" th:classappend="${n==6} ? 'active' : ' '"><i class="alarm icon"></i>消息<span class="mini ui red circular label" th:text="${#arrays.length(newcom)}" th:if="${newcom}==null or ${#arrays.length(newcom)}==0">6</span></a>
 <!--                <form id="_form" method="post" action="../blogs/input">-->
 
 <!--                    <a href="#" class="item" onclick="document.getElementById('_form').submit();"th:classappend="${n==6} ? 'active' : ' '"><i class="write icon"></i>写博客</a>-->

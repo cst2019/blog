@@ -3,7 +3,7 @@
 <head th:replace="_fragments::head(~{::title})">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>搜索结果</title>
+  <title>关于我</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
   <link rel="stylesheet" href="../static/css/me.css">
 </head>
@@ -15,13 +15,13 @@
       <div class="ui inverted secondary stackable menu">
         <h2 class="ui teal header item">Blog</h2>
         <a href="#" class=" m-item item m-mobile-hide"><i class="mini home icon"></i>首页</a>
-        <a href="#" class="m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
-        <a href="#" class="active m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
+        <a href="#" class=" m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
+        <a href="#" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
         <a href="#" class="m-item item m-mobile-hide"><i class="mini clone icon"></i>归档</a>
-        <a href="#" class="m-item item m-mobile-hide"><i class="mini info icon"></i>关于我</a>
+        <a href="#" class="active m-item item m-mobile-hide"><i class="mini info icon"></i>关于我</a>
         <div class="right m-item item m-mobile-hide">
           <div class="ui icon inverted transparent input m-margin-tb-tiny">
-            <input type="text" placeholder="Search...." >
+            <input type="text" placeholder="Search....">
             <i class="search link icon"></i>
           </div>
         </div>
@@ -33,23 +33,55 @@
   </nav>
 
   <!--中间内容-->
-  <div  class="m-container-small m-padded-tb-big">
+  <div  class="m-container m-padded-tb-big">
     <div class="ui container">
-      <!--header-->
+<!--      个人信息模块-->
+      <div class="ui top attached segment">
+           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <h2 class="ui black header" style="margin-left: 50px;">个人资料</h2>
+        <div class="ui inverted section divider"></div>
+        <div class="ui middle aligned two column grid" style="margin-left: 35px;">
+          <div class="three wide column">
+            <div class="ui small  bordered image">
+              <img src="@{${us.avatar}}" th:src="@{${us.avatar}}">
+            </div>
+            <br>
+            <br>
+            <br>
+          </div>
+          <div class="ui form"  style="padding-left: 10px!important;padding-top: 20px!important;">
+            id: &nbsp;<span th:text="${us.username}">cst</span><br><br>
+            邮箱：<span th:text="${us.email}">863190937@qq.com</span><br><br>
+            关注：<span th:text="${#arrays.length(us.following)}">80</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            粉丝：<span th:text="${#arrays.length(us.followed)}">135</span>
+            <br><br>
+            博客：<span th:text="${#arrays.length(us.blogs)}">135</span>篇&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            喜欢博客：<span th:text="${#arrays.length(us.likes)}">135</span>篇<br><br>
+            个性签名：
+            <div class="ui input">
+             <span th:text=" ${us.des}">135</span><
+            </div>
+          </div>
+        </div>
+        </div>
+<!--      个人博客总数-->
       <div class="ui top attached segment">
         <div class="ui middle aligned two column grid">
           <div class="column">
-            <h3 class="ui teal header">搜索结果</h3>
+            <h3 class="ui teal header">博客</h3>
           </div>
           <div class="right aligned column">
-            共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${page.totalElements}"> 14 </h2> 个
+            共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${page.totalElements}"> 14 </h2> 篇
           </div>
         </div>
       </div>
+<!--个人博客展示-->
+      <div class="ui attached  segment">
 
-      <div class="ui top attached teal segment">
         <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${page.content}">
           <div class="ui middle aligned mobile reversed stackable grid">
+
             <div class="eleven wide column">
               <h3 class="ui header"><a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black" th:text="${blog.title}">你真的理解什么是财富自由吗？</a></h3>
               <p class="m-text" th:text="|${blog.description}......|">正确做好任何一件事情的前提是清晰、正确的理解目标。而事实是，我们很多人很多时候根本没有对目标正确的定义，甚至根本从来就没有想过，只是大家都那么做而已…...</p>
@@ -73,8 +105,8 @@
                 <div class="item">
                   <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin" th:text="${blog.type.name}">认知升级</a>
                 </div>
-
               </div>
+
             </div>
 
             <div class="five wide column">
@@ -84,19 +116,22 @@
             </div>
 
           </div>
-        </div>
-       </div>
 
-      <div class="ui bottom attached segment" th:if="${page.totalPages}>1">
+        </div>
+
+      </div>
+<!--      上下页-->
+      <div class="ui bottom attached segment" th:if="(${page.totalPages}>1)">
         <div class="ui middle aligned two column grid">
           <div class="column">
-            <a href="#" th:href="@{/search1/{query}(page=${page.number}-1,query=${query})}" th:unless="${page.first}" class="ui mini teal basic button">上一页</a>
+            <a href="#" th:href="@{/selfzon/{id}(id=${us.id},page=${page.number}-1)}" th:unless="${page.first}" class="ui mini teal basic button">上一页</a>
           </div>
           <div class="right aligned column">
-            <a href="#" th:href="@{/search1/{query}(page=${page.number}+1,query=${query})}" th:unless="${page.last}" class="ui mini teal basic button">下一页</a>
+            <a href="#" th:href="@{/selfzon/{id}(id=${us.id},page=${page.number}+1)}" th:unless="${page.last}" class="ui mini teal basic button">下一页</a>
           </div>
         </div>
       </div>
+    </div>
 
     </div>
   </div>
@@ -136,7 +171,15 @@
       </div>
       <div class="ui inverted section divider"></div>
       <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2016 - 2017 Lirenmi Designed by Lirenmi</p>
+      <br>
+      <br>
+      <br>  <br>
+      <br>
+      <br>  <br>
+      <br>
+      <br>
     </div>
+
 
   </footer>
 
@@ -145,11 +188,20 @@
   <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
   <!-- /*/</th:block>/*/-->
 
+
   <script>
+
     $('.menu.toggle').click(function () {
       $('.m-item').toggleClass('m-mobile-hide');
     });
 
+    $('.ui.dropdown').dropdown({
+      on : 'hover'
+    });
+    function follow(){
+      document.getElementById( "ss").style.visibility= "visible ";
+
+    }
   </script>
 </body>
 </html>

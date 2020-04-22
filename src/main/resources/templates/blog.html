@@ -55,7 +55,7 @@
             </div>
               <br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <a class="header" href="#" th:text="${blog.user.nickname}">陈世拓</a>
+              <a class="header" th:href="@{/selfzon/{id}(id=${blog.user.id})}" href="#" th:text="${blog.user.nickname}">陈世拓</a>
                   <button id="followButton" class="ui orange basic circular button  " onclick="follow()" th:if="(${session.user}==null) or (${blog.user.id}!=${session.user.id})">
                <div th:if="!${isFollow}"><i class="plus icon"></i><span>关注</span> &nbsp;</div>
                     <div th:if="${isFollow}"><i class="remove icon"></i><span>取消</span> &nbsp;</div>
@@ -84,7 +84,7 @@
           <div class="ui horizontal link list">
             <div class="item">
               <img src="https://unsplash.it/100/100?image=1005" th:src="@{${blog.user.avatar}}"  alt="" class="ui avatar image">
-              <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">陈世拓</a></div>
+              <div class="content"><a th:href="@{/selfzon/{id}(id=${blog.user.id})}" href="#" class="header" th:text="${blog.user.nickname}">陈世拓</a></div>
             </div>
             <div class="item">
               <i class="calendar icon"></i> <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2017-10-01</span>
@@ -154,11 +154,12 @@
           <div class="ui middle aligned grid">
             <div class="eleven wide column">
               <ui class="list">
-                <li>作者：<span th:text="${blog.user.nickname}">李仁密</span><a href="#" th:href="@{/about}" target="_blank">（联系作者）</a></li>
+                <li>作者：<span th:text="${blog.user.nickname}">李仁密</span><a href="#" th:href="@{/selfzon/{id}(id=${blog.user.id})}" target="_blank">（联系作者）</a></li>
                 <li>发表时间：<span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd HH:mm')}">2017-10-02 09:08</span></li>
                 <li>版权声明：自由转载-非商用-非衍生-保持署名（创意共享3.0许可证）</li>
                 <li>公众号转载：请在文末添加作者公众号二维码</li>
               </ui>
+              <div class="bshare-custom"><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到人人网" class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count">0</span></div>
             </div>
             <div  class="five wide column">
               <img src="../static/images/wechat.jpg" th:src="@{/images/wechat.jpg}" alt="" class="ui right floated rounded bordered image" style="width: 110px">
@@ -176,7 +177,7 @@
                     <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.avatar}}">
                   </a>
                   <div class="content">
-                    <a class="author" >
+                    <a class="author" th:href="@{/selfzon/{id}(id=${comment.user.id})}">
                       <span th:text="${comment.nickname}">Matt</span>
 
                       <div class="ui mini basic teal left pointing label m-padded-tb-mini" th:if="${comment.adminComment}">博主</div>
@@ -197,7 +198,7 @@
                         <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">
                       </a>
                       <div class="content">
-                        <a class="author" >
+                        <a class="author" th:href="@{/selfzon/{id}(id=${reply.user.id})}">
                           <span th:text="${reply.nickname}">Matt</span>
                           <div class="ui mini basic teal left pointing label m-padded-tb-mini" th:if="${reply.adminComment}">博主</div>
                           &nbsp;<span th:text="|@ ${reply.parentComment.nickname}|" class="m-teal">@ 小白</span>
@@ -216,13 +217,16 @@
                   </div>
 
                 </div>
+                <input type="hidden" name="mes" th:value="${message}">
               </div>
+
             </div>
 
           </div>
           <span th:if="${!blog.commentabled}">博主暂时关闭了该博客的评论功能</span>
           <div th:if="${blog.commentabled}">
             <span th:if="${session.user}==null">您还未登录，<a href="#" th:href="@{/}">登录</a>即可开启评论、点赞</span>
+
             <div id="comment-form" class="ui form" th:if="${session.user}!=null">
               <input type="hidden" name="blog.id" th:value="${blog.id}">
               <input type="hidden" name="parentComment.id" th:value="-1">
@@ -445,8 +449,15 @@
       // "email" : $("[name='email']").val(),
       "content" : $("[name='content']").val()
     },function (responseTxt,statusTxt,xhr) {
-      $(window).scrollTo($('#comment-container'),500);
-      clearContent();
+      if($("[name='mes']").val()=='评论提交成功'){
+        $(window).scrollTo($('#comment-container'),500);
+        alert($("[name='mes']").val());
+        clearContent();
+      }else{
+        $(window).scrollTo($('#comment-form'),500);
+        alert($("[name='mes']").val());
+      }
+
     });
   }
   function clearContent() {
@@ -467,6 +478,8 @@
     on : 'hover'
   });
 
+
 </script>
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=1728d536-62d5-4fcd-9b76-129908ba03b8&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
 </body>
 </html>

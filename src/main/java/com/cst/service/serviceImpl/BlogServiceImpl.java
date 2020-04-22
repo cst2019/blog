@@ -36,6 +36,9 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
+
     @Override
     public Blog getBlog(Long id) {
 
@@ -285,6 +288,7 @@ public class BlogServiceImpl implements BlogService {
     @Transactional
     @Override
     public void deleteBlog(Long id) {
+        commentRepository.deleteCommentsByBlogId(id);
         blogRepository.deleteById(id);
     }
 

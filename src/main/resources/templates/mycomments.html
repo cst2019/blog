@@ -88,6 +88,8 @@
                       </div>
                     </div>
                   </div>
+                  <input type="hidden" name="mes" th:value="${message}">
+
 <!--               评论的博客-->
                   <div class="rounded comments" style="background-color: #E6E1DC;margin-right: 75px;margin-top:20px;margin-left: 50px;padding-left: 10px;padding-top: 10px;padding-bottom: 0px;margin-bottom: 10px;">
                       <h3 class="ui header"><a href="#" th:href="@{/blog/{id}(id=${comment.blog.id})}" target="_blank" class="m-black" th:text="${comment.blog.title}">你真的理解什么是财富自由吗？</a></h3>
@@ -114,7 +116,9 @@
                     </div>
                   </div>
                   <!--              回复消息框-->
+                  <form th:action="@{/mcomments}" method="post">
                   <div id="comment-form" class="ui form">
+                    <input type="hidden" name="page" th:value="${comments.number}">
                     <input type="hidden" name="blog.id" th:value="${comment.blog.id}">
                     <input type="hidden" name="parentComment.id" th:value="${comment.id}">
                     <div class="field m-padded-tb-large" >
@@ -130,12 +134,12 @@
                         </div>
                       </div>
                       <div class="field right m-margin-bottom-small m-mobile-wide">
-                        <button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>回复</button>
+                        <input   type="submit" class="ui teal button m-mobile-wide"></input>
                       </div>
                     </div>
 
                   </div>
-
+                  </form>
 
                   <div class="ui  section divider"></div>
                 </div>
@@ -221,6 +225,9 @@
 
 <script th:inline="javascript">
 
+  if($("[name='mes']").val()!=""){
+    alert($("[name='mes']").val());
+  }
   $('.ui.dropdown').dropdown({
     on : 'hover'
   });
@@ -238,9 +245,10 @@
     $("#comment-container").load(/*[[@{/mycomments}]]*/"",{
       "parentComment.id" : $("[name='parentComment.id']").val(),
       "blog.id" : $("[name='blog.id']").val(),
-      "content" : $("[name='content']").val()
+      "content" : $("[name='content']").val(),
+      "page":$("[name='page']").val()
     },function (responseTxt,statusTxt,xhr) {
-     window.alert('回复成功');
+      alert($("[name='mes']").val());
     });
   }
 </script>

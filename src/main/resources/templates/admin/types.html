@@ -67,7 +67,7 @@
             <td th:text="${type.name}">刻意练习清单</td>
             <td>
               <a href="#" th:href="@{/admin/types/{id}/input(id=${type.id})}" class="ui mini teal basic button">编辑</a>
-              <a href="#" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="ui mini red basic button">删除</a>
+              <a onclick="return page(this)" href="#" th:href="@{/admin/types/{id}/{page}/delete(id=${type.id},page=${page.number})}" class="ui mini red basic button">删除</a>
             </td>
           </tr>
         </tbody>
@@ -144,6 +144,14 @@
           .closest('.message')
           .transition('fade');
       });
+
+    function page(obj) {
+
+      if(confirm("您确定删除这个分类以及该分类下的所有博客吗")){
+        return true;
+      }
+      return false;
+    }
 
   </script>
 </body>

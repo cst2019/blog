@@ -98,15 +98,15 @@ public class TypeController {
     }
 
 
-    @GetMapping("/types/{id}/delete")
-    public String delete(@PathVariable Long id,RedirectAttributes attributes){
+    @GetMapping("/types/{id}/{page}/delete")
+    public String delete(@PathVariable Long id,@PathVariable Long page,RedirectAttributes attributes){
         Type dbType=typeService.getType(id);
         if(dbType==null){
             attributes.addFlashAttribute("message","不存在该类别");
         }
         typeService.deleteType(id);
         attributes.addFlashAttribute("message","删除成功");
-        return "redirect:/admin/types";
+        return "redirect:/admin/types?page="+page;
     }
 
 }

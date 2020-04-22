@@ -32,4 +32,12 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
         @Modifying
         @Query("update Comment c set c.isNew=false where c.id=?1")
         void updateNew(Long id);
+
+//        @Transactional
+//        @Modifying
+//        @Query(value="delete from Comment c where c.blog=?1",nativeQuery = true)
+//        void deleteBlogid(Long id);
+
+        void deleteCommentsByBlogId(long blogId);
+
 }

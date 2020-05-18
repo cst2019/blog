@@ -62,10 +62,19 @@ public class IndexController {
         model.addAttribute("a",1);
         return "index";
     }
+
+    /**
+     * 关注的人
+     * @param pageable
+     * @param model
+     * @param session
+     * @return
+     */
     @GetMapping("/index1")
-    public String index1(@PageableDefault(size=5,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,
+    public String index1(@PageableDefault(size=5,sort = {"createTime"},direction = Sort.Direction.DESC) Pageable pageable,
                         Model model,HttpSession session){
-        model.addAttribute("page",blogService.listPublishedBlog(pageable));
+        User user= (User) session.getAttribute("user");
+        model.addAttribute("page",blogService.listFollowingBlog(pageable,user));
         model.addAttribute("types",typeService.listType(6));
         model.addAttribute("tags",tagService.listTag(10));
         model.addAttribute("recommenedBlogs",blogService.listRecommendBlogTop(8));
@@ -110,7 +119,7 @@ public class IndexController {
      * @return
      */
     @GetMapping("/selfzon/{id}")
-    public String selfzon(@PageableDefault(size=3,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,
+    public String selfzone(@PageableDefault(size=3,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,
                           @PathVariable Long id,
                         Model model,HttpSession session){
         User user= (User) session.getAttribute("user");//当前用户

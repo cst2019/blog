@@ -1,6 +1,9 @@
 package com.cst.service.serviceImpl;
 
+import com.cst.dao.BlogRepository;
+import com.cst.dao.RoleRepository;
 import com.cst.dao.UserRepository;
+import com.cst.po.SysRole;
 import com.cst.po.User;
 import com.cst.service.UserService;
 import com.cst.util.MD5Utils;
@@ -16,6 +19,10 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RoleRepository roleRepository;
+    @Autowired
+    BlogRepository blogRepository;
     @Override
     public User checkUser(String username, String password) {
 
@@ -30,7 +37,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> listUser(Pageable pageable) {
-        return userRepository.findAll(pageable);
+        Page<User> users=userRepository.findAll(pageable);
+        return users;
+    }
+
+    @Override
+    public Page<User> listUserByUsername(Pageable pageable, String username) {
+
+        return userRepository.findByUsername(pageable,username);
     }
 
     @Override
@@ -92,5 +106,40 @@ public class UserServiceImpl implements UserService {
     @Override
     public User existUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public int addAdmin(Long id) {
+        SysRole role=roleRepository.findByusId("admin");
+        int a =1;
+        User user1 = null;
+        for(User user :role.getUsers()){
+            if(user.getId().equals(id)){
+                a=0;
+                user1=user;
+            }
+        }
+        if(a==0) {
+            role.getUsers().remove(user1);
+            userRepository.updateType(id, 1);
+        }
+        else   {
+            userRepository.updateType(id,0);
+            User user=userRepository.findById(id).get();
+           role.getUsers().add(user);
+        }
+        roleRepository.save(role);
+        return a;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        blogRepository.deleteBlogsByUserId(id);
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateNicknameAndDes(User user) {
+        userRepository.save(user);
     }
 }

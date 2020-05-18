@@ -9,7 +9,7 @@ import com.cst.po.Type;
 
 @Entity
 @Table(name= "t_blog")
-public class Blog {
+public class Blog implements Comparable<Blog>{
     @Id
     @GeneratedValue
     private Long id;
@@ -262,5 +262,21 @@ public class Blog {
                 ", comments=" + comments +
                 ", tagIds='" + tagIds + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Blog o) {
+        if(this.getCreateTime().compareTo(o.getCreateTime())<0)
+        {
+            return 1;
+        }
+        else if(this.getCreateTime().compareTo(o.getCreateTime())>0)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 }

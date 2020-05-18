@@ -16,7 +16,7 @@
 
 <nav th:fragment="menu(n)" class="ui  attached segment m-padded-tb-mini">
     <div class="ui container">
-        <div class="ui  secondary menu ">
+        <div class="ui  secondary stackable menu ">
             <h2 class="ui red header item">寻知网</h2>
             <a href="#" class="item" th:href="@{/index}" th:classappend="${n==1} ? 'active' : ' '"><i class="home icon"></i> 首页</a>
             <a href="#" class="item" th:href="@{/types/-1}" th:classappend="${n==2} ? 'active' : ' '"><i class="idea icon"></i> 分类</a>

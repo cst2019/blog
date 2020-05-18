@@ -36,14 +36,6 @@
     <i class="sidebar icon"></i>
   </a>
 </nav>
-<div class="ui attached pointing menu">
-  <div class="ui container">
-    <div class="right menu">
-      <a href="#" class="teal active item">发布</a>
-      <a href="#" class="item">列表</a>
-    </div>
-  </div>
-</div>
 
 <!--中间内容-->
 <div  class="m-container m-padded-tb-big">
@@ -120,12 +112,6 @@
       <div class="inline fields">
         <div class="field">
           <div class="ui checkbox">
-            <input type="checkbox" id="shareStatement" name="shareStatement" th:checked="*{shareStatement}" class="hidden">
-            <label for="shareStatement">转载声明</label>
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui checkbox">
             <input type="checkbox" id="commentabled" name="commentabled" th:checked="*{commentabled}" class="hidden">
             <label for="commentabled">评论</label>
           </div>
@@ -135,7 +121,6 @@
       <div class="ui error message"></div>
 
       <div class="ui right aligned container">
-        <button type="button" class="ui button" onclick="window.history.go(-1)" >返回</button>
         <button type="button" id="publish-btn" class="ui teal button">发布</button>
 
       </div>
@@ -207,6 +192,17 @@
       path    : "/lib/editormd/lib/"
     });
   });
+
+  // $(function() {
+  //   editormd("my-editormd", {//注意1：这里的就是上面的DIV的id属性值
+  //     width   : "90%",
+  //     height  : 640,
+  //     syncScrolling : "single",
+  //     path    : "/smart-api/htdocs/mdeditor/lib/",//注意2：你的路径
+  //     saveHTMLToTextarea : true//注意3：这个配置，方便post提交表单
+  //   });
+  // });
+
   $('.menu.toggle').click(function () {
     $('.m-item').toggleClass('m-mobile-hide');
   });

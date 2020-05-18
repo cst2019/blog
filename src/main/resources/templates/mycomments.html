@@ -50,11 +50,11 @@
                 <h3 class="ui dividing header">消息</h3>
                 <div class="comment" th:each="comment : ${comments.content}">
                   <a class="avatar">
-                    <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.avatar}}">
+                    <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.user.avatar}}">
                   </a>
                   <div class="content">
                     <a class="author" >
-                      <span th:text="${comment.nickname}">Matt</span>
+                      <span th:text="${comment.user.nickname}">Matt</span>
 
                       <div class="ui mini basic teal left pointing label m-padded-tb-mini" th:if="${comment.adminComment}">博主</div>
                     </a>
@@ -72,13 +72,13 @@
                   <div class="comments" th:if="${comment.parentComment}!=null">
                     <div class="comment" th:each="reply : ${comment.parentComment}">
                       <a class="avatar">
-                        <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">
+                        <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.user.avatar}}">
                       </a>
                       <div class="content">
                         <a class="author" >
-                          <span th:text="${reply.nickname}">Matt</span>
+                          <span th:text="${reply.user.nickname}">Matt</span>    </a>
                           <div class="ui mini basic teal left pointing label m-padded-tb-mini" th:if="${reply.adminComment}">博主</div>
-                        </a>
+
                         <div class="metadata">
                           <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
                         </div>

@@ -156,5 +156,21 @@ public class SelfController {
         model.addAttribute("us",userService.getUser(user.getId()));
         return "about";
     }
+    @GetMapping("/upUser")
+    public String updateUser(String nickname,String des ,
+                             Model model,HttpSession session,RedirectAttributes attributes){
+        User user= (User) session.getAttribute("user");
+        if(user==null){
+            attributes.addFlashAttribute("message","您还没有登录，请先登录");
+            return "redirect:/";
+        }
+        user.setNickname(nickname);
+        user.setDes(des);
+        userService.updateNicknameAndDes(user);
+        setNewCom(model,session);
+        session.setAttribute("user",user);
+        model.addAttribute("us",userService.getUser(user.getId()));
+        return "about";
+    }
 
 }

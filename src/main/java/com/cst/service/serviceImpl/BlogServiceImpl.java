@@ -67,7 +67,7 @@ public class BlogServiceImpl implements BlogService {
             public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
                 List<Predicate> predicates=new ArrayList<>();
                 if(!"".equals(blog.getTitle()) && blog.getTitle() !=null){
-                            predicates.add(cb.like(root.<String>get("title"),"%"+blog.getTitle()+"%"));
+                            predicates.add(cb.like(root.<String>get("user").get("username"),blog.getTitle()));
                 }
                 if(blog.getTypeId()!=null){
                     predicates.add(cb.equal(root.<Type>get("type").get("id"),blog.getTypeId()));
@@ -295,5 +295,25 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Long countBlog(User user) {
         return blogRepository.countBlogByUser(user);
+    }
+
+    /**
+     * 关注的人的blog
+     * @param pageable
+     * @param user
+     * @return
+     */
+    @Override
+    public Page<Blog> listFollowingBlog(Pageable pageable, User user) {
+        user=userRepository.findById(user.getId()).get();
+        List<User> us=user.getFollowing();
+        List<Blog> b1=new ArrayList<>();
+        for(User user1:us){
+            List<Blog> ub = user1.getBlogs();
+            b1.addAll(ub);
+        }
+        Collections.sort(b1);
+
+        return listConvertToPage(b1,pageable);
     }
 }

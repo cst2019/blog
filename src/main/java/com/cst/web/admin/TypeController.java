@@ -2,6 +2,7 @@ package com.cst.web.admin;
 
 import com.cst.po.Type;
 import com.cst.service.TypeService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,7 +32,7 @@ public class TypeController {
     private TypeService typeService;
 
 
-
+    @RequiresRoles("admin")
     @GetMapping("/types")
     public String types(@PageableDefault(size = 5,sort = {"id"},direction = Sort.Direction.DESC)
                                     Pageable pageable, Model model){
@@ -42,14 +43,14 @@ public class TypeController {
 
 
 
-
+    @RequiresRoles("admin")
     @GetMapping("types/input")
     public String input(){
         return "admin/types-input";
     }
 
 
-
+    @RequiresRoles("admin")
     @GetMapping("/types/{id}/input")
     public String editInput(@PathVariable Long id,Model model){
         System.out.println(id);
@@ -57,7 +58,7 @@ public class TypeController {
         return "admin/types-edit";
     }
 
-
+    @RequiresRoles("admin")
     @PostMapping("/types")
     public String post(Type type,
                        RedirectAttributes attributes){
@@ -78,7 +79,7 @@ public class TypeController {
     return "redirect:/admin/types";
     }
 
-
+    @RequiresRoles("admin")
     @PostMapping("/types/{id}")
     public String editPost(Type type,
                        @PathVariable Long  id,
@@ -97,7 +98,7 @@ public class TypeController {
         return "redirect:/admin/types";
     }
 
-
+    @RequiresRoles("admin")
     @GetMapping("/types/{id}/{page}/delete")
     public String delete(@PathVariable Long id,@PathVariable Long page,RedirectAttributes attributes){
         Type dbType=typeService.getType(id);

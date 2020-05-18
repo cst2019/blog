@@ -31,24 +31,5 @@ public class UserController {
 //        model.addAttribute("allow","用户名可用！");
 //     return "register :: commentList";
 //    }
-    @PostMapping("/regristry")
-    public String regristry(User user, @RequestParam("terms") String  terms, RedirectAttributes attributes, Model model){
-   User s=userService.existUserByEmail(user.getEmail());
-   if(s!=null){
-    attributes.addFlashAttribute("message","邮箱已被注册使用");
-       return "redirect:/registers";
-   }
-        s=userService.existUserByTelephone(user.getTelephone());
-   if(s!=null){
-       attributes.addFlashAttribute("message","手机号码已经注册过了");
-       return "redirect:/registers";
-   }
-s=userService.existUserByUsername(user.getUsername());
-   if(s!=null){
-       attributes.addFlashAttribute("message","用户名不可用，已经别人注册过了");
-       return "redirect:/registers";
-   }
-           userService.addUser(user);
-            return "redirect:/";
-    }
+
 }

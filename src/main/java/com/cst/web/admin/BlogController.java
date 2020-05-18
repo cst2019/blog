@@ -6,6 +6,7 @@ import com.cst.service.BlogService;
 import com.cst.service.TagService;
 import com.cst.service.TypeService;
 import com.cst.vo.BlogQueryVo;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,6 +35,7 @@ public class BlogController {
     @Autowired
     private TagService tagService;
 
+    @RequiresRoles("admin")
     @GetMapping("/blogss")
     public String blogs(@PageableDefault(size=5,sort = {"updateTime"},direction = Sort.Direction.DESC)Pageable pageable,
                         BlogQueryVo blog,
@@ -44,6 +46,7 @@ public class BlogController {
         return "/admin/blogs";
     }
 
+    @RequiresRoles("admin")
     @PostMapping("/blogs/search")
     public String search(@PageableDefault(size=5,sort = {"updateTime"},direction = Sort.Direction.DESC)Pageable pageable,
                         BlogQueryVo blog,
@@ -51,6 +54,7 @@ public class BlogController {
         model.addAttribute("page",blogService.listBlog(pageable,blog));
         return "admin/blogs :: blogList";
     }
+
 
     @GetMapping("/blogs/input")
     public String input(Model model){
@@ -81,6 +85,7 @@ public class BlogController {
      * @param model
      * @return
      */
+    @RequiresRoles("admin")
     @GetMapping("/recom/{id}/{page}")
     public String isCom(@PathVariable Long id,@PathVariable Long page,
                            Model model){
@@ -93,6 +98,7 @@ public class BlogController {
         return REDIRECT_LIST+"?page="+page;
     }
 
+    @RequiresRoles("admin")
     @GetMapping("/blogs/{id}/{page}/delete")
     public String delete(@PathVariable Long id,@PathVariable Long page,
                          Model model){

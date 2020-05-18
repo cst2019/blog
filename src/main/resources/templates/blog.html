@@ -48,35 +48,31 @@
         <!--个人明信片-->
         <div id="div01" class="ui   link  card m-card-center">
 
-          <div class="content">
-            <div style="padding-left: 55px">
-              <div class="ui  medium circular image">
-              <img src="https://unsplash.it/100/100?image=1005" th:src="@{${blog.user.avatar}}">
-            </div>
-              <br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <a class="header" th:href="@{/selfzon/{id}(id=${blog.user.id})}" href="#" th:text="${blog.user.nickname}">陈世拓</a>
-                  <button id="followButton" class="ui orange basic circular button  " onclick="follow()" th:if="(${session.user}==null) or (${blog.user.id}!=${session.user.id})">
-               <div th:if="!${isFollow}"><i class="plus icon"></i><span>关注</span> &nbsp;</div>
-                    <div th:if="${isFollow}"><i class="remove icon"></i><span>取消</span> &nbsp;</div>
-                  </button>
-
+            <div class="ui card">
+              <div class="image">
+                <img  class="ui medium circular image" src="/images/avatar2/large/kristy.png" th:src="@{${blog.user.avatar}}">
               </div>
-            <div class="meta">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <span th:text="${blog.user.email}">他的希望和</span>
-              <br>
-              <span>博客：</span><span th:text="${#arrays.length(blog.user.blogs)}">s</span>
-              <span>关注：</span><span th:text="${#arrays.length(blog.user.following)}">s</span>
-              <span>粉丝：</span><span th:text="${#arrays.length(blog.user.followed)}">s</span>
+              <div class="content">
+                <a class="header" th:href="@{/selfzon/{id}(id=${blog.user.id})}" href="#" th:text="${blog.user.nickname}">Kristy</a>
+                <button id="followButton" class="ui orange basic circular button  " onclick="follow()" th:if="(${session.user}==null) or (${blog.user.id}!=${session.user.id})">
+                  <div th:if="!${isFollow}"><i class="plus icon"></i><span>关注</span> &nbsp;</div>
+                  <div th:if="${isFollow}"><i class="remove icon"></i><span>取消</span> &nbsp;</div>
+                </button>
+                <div class="meta">
+                  <span class="date"><span th:text="${#dates.format(blog.user.createTime,'yyyy')}">2013</span>年加入</span>
+                </div>
+                <div class="description" style="font-family: 楷体;font-weight: 800 ;!important;" th:text="${blog.user.des}">Kristy is an art director living in New York. </div>
+              </div>
+              <div class="extra content">
+                <span th:text="${blog.user.email}">他的希望和</span>
+                <br>
+                <span>博客：</span><span th:text="${#arrays.length(blog.user.blogs)}">s</span> <br>
+                <span>关注：</span><span th:text="${#arrays.length(blog.user.following)}">s</span> <br>
+                <span>粉丝：</span><span th:text="${#arrays.length(blog.user.followed)}">s</span> <br>
+              </div>
             </div>
-            <div class=" description m-padded" style="font-family: 楷体;font-weight: 800 ;!important;" th:text="${blog.user.des}">
-            心情好
-            </div>
-            </div>
-          </div>
         </div>
-          </div>
+          </div></div>
       </div>
 
       <div class=" eleven wide column">
@@ -174,11 +170,11 @@
                 <h3 class="ui dividing header">评论</h3>
                 <div class="comment" th:each="comment : ${comments}">
                   <a class="avatar">
-                    <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.avatar}}">
+                    <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.user.avatar}}">
                   </a>
                   <div class="content">
                     <a class="author" th:href="@{/selfzon/{id}(id=${comment.user.id})}">
-                      <span th:text="${comment.nickname}">Matt</span>
+                      <span th:text="${comment.user.nickname}">Matt</span>
 
                       <div class="ui mini basic teal left pointing label m-padded-tb-mini" th:if="${comment.adminComment}">博主</div>
                     </a>
@@ -189,20 +185,22 @@
                       How artistic!
                     </div>
                     <div class="actions">
-                      <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${comment.id},data-commentnickname=${comment.nickname}" onclick="reply(this)">回复</a>
+                      <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${comment.id},data-commentnickname=${comment.user.nickname}" onclick="reply(this)">回复</a>
                     </div>
                   </div>
                   <div class="comments" th:if="${#arrays.length(comment.replayComments)}>0">
                     <div class="comment" th:each="reply : ${comment.replayComments}">
                       <a class="avatar">
-                        <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">
+                        <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.user.avatar}}">
                       </a>
                       <div class="content">
                         <a class="author" th:href="@{/selfzon/{id}(id=${reply.user.id})}">
-                          <span th:text="${reply.nickname}">Matt</span>
+                          <span th:text="${reply.user.nickname}">Matt</span></a>
                           <div class="ui mini basic teal left pointing label m-padded-tb-mini" th:if="${reply.adminComment}">博主</div>
-                          &nbsp;<span th:text="|@ ${reply.parentComment.nickname}|" class="m-teal">@ 小白</span>
+                          &nbsp;
+                        <a class="author" th:href="@{/selfzon/{id}(id=${reply.parentComment.user.id})}"><span th:text="|@ ${reply.parentComment.user.nickname}|" class="m-teal">@ 小白</span>
                         </a>
+
                         <div class="metadata">
                           <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
                         </div>
@@ -210,7 +208,7 @@
                           How artistic!
                         </div>
                         <div class="actions">
-                          <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${reply.id},data-commentnickname=${reply.nickname}" onclick="reply(this)">回复</a>
+                          <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${reply.id},data-commentnickname=${reply.user.nickname}" onclick="reply(this)">回复</a>
                         </div>
                       </div>
                     </div>

@@ -68,7 +68,7 @@ public class CommentController {
      * @return
      */
     @PostMapping("/comments")
-    public String post(Comment comment,
+    public String saveComment(Comment comment,
                        HttpSession session,
                        RedirectAttributes attributes){
         Long blogId=comment.getBlog().getId();

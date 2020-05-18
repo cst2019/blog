@@ -57,4 +57,6 @@ public interface BlogService {
     void deleteBlog(Long id);
 
     Long countBlog(User user);
+
+    Page<Blog> listFollowingBlog(Pageable pageable, User user);
 }

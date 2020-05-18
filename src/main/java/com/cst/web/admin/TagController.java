@@ -2,6 +2,7 @@ package com.cst.web.admin;
 
 import com.cst.po.Tag;
 import com.cst.service.TagService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,7 +29,7 @@ public class TagController {
     private TagService tagService;
 
 
-
+    @RequiresRoles("admin")
     @GetMapping("/tags")
     public String types(@PageableDefault(size = 5,sort = {"id"},direction = Sort.Direction.DESC)
                                     Pageable pageable, Model model){
@@ -39,21 +40,21 @@ public class TagController {
 
 
 
-
+    @RequiresRoles("admin")
     @GetMapping("tags/input")
     public String input(){
         return "admin/tags-input";
     }
 
 
-
+    @RequiresRoles("admin")
     @GetMapping("/tags/{id}/input")
     public String editInput(@PathVariable Long id,Model model){
         model.addAttribute("tag",tagService.getTag(id));
         return "admin/tags-edit";
     }
 
-
+    @RequiresRoles("admin")
     @PostMapping("/tags")
     public String post(Tag tag,
                        RedirectAttributes attributes){
@@ -74,7 +75,7 @@ public class TagController {
     return "redirect:/admin/tags";
     }
 
-
+    @RequiresRoles("admin")
     @PostMapping("/tags/{id}")
     public String editPost(Tag tag,
                        @PathVariable Long  id,
@@ -82,7 +83,7 @@ public class TagController {
         Tag dbTag=tagService.getTagByName(tag.getName());
         if(dbTag!=null){
             attributes.addFlashAttribute("message","修改失败,名称不能重复");
-            return "redirect:/admin/types";
+            return "redirect:/admin/tags";
         }
         Tag  t=tagService.updateTag(id,tag);
         if(t==null){
@@ -93,9 +94,13 @@ public class TagController {
         return "redirect:/admin/tags";
     }
 
-
+    @RequiresRoles("admin")
     @GetMapping("/tags/{id}/{page}/delete")
     public String delete(@PathVariable Long id,@PathVariable Long page,RedirectAttributes attributes){
+        if(id.equals(new Long(91))){
+            attributes.addFlashAttribute("message","该标签为备用标签，请勿删除");
+            return "redirect:/admin/tags?page="+page;
+        }
         Tag dbTag=tagService.getTag(id);
         if(dbTag==null){
             attributes.addFlashAttribute("message","不存在该类别");

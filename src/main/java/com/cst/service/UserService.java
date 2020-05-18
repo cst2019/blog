@@ -13,6 +13,8 @@ public interface UserService {
 
     Page<User> listUser(Pageable pageable);
 
+    Page<User> listUserByUsername(Pageable pageable,String username);
+
     void updateAvatar(Long id,String avatar);
 
     Page<User> getFollowed(Long userId, Pageable pageable);
@@ -26,4 +28,10 @@ public interface UserService {
     User existUserByTelephone(String telephone);
 
     User existUserByUsername(String username);
+
+    int addAdmin(Long id);
+
+    void deleteById(Long id);
+
+    void updateNicknameAndDes(User user);
 }

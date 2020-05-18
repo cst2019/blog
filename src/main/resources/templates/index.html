@@ -44,10 +44,10 @@
             <div class="ui container">
               <div class="left menu">
                 <a href="#" th:href="@{/index}" class=" item" th:classappend="${a}==1 ? 'teal active'">推荐 </a>
-                <a href="#" th:href="@{/index1}" class=" item" th:classappend="${a}==2 ? 'teal active'">最新 </a>
-                <a href="#" th:href="@{/index2}" class=" item" th:classappend="${a}==3 ? 'teal active'">最热 </a>
+                <a href="#" th:href="@{/index1}" class=" item" th:classappend="${a}==2 ? 'teal active'" th:if="${session.user}!=null">关注 </a>
+                <a href="#" th:href="@{/index2}" class=" item" th:classappend="${a}==3? 'teal active'">最热 </a>
               </div>
-              <span th:text="${page.totalElements}">10</span>
+<!--              <span th:text="${page.totalElements}">10</span>-->
             </div>
           </div>
           <!--content-->

@@ -10,7 +10,7 @@
 <body>
 
   <!--导航-->
-  <nav th:replace="_fragments :: menu(4)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+  <nav th:replace="_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
     <div class="ui container">
       <div class="ui inverted secondary stackable menu">
         <h2 class="ui teal header item">Blog</h2>
@@ -60,8 +60,12 @@
               <input type="hidden" name="mes" th:value="${message}">
             </div>
           </div>
-          <div class="ui form"  style="padding-left: 10px!important;padding-top: 20px!important;">
-            id: &nbsp;<span th:text="${us.username}">cst</span><br><br>
+          <div  style="padding-left: 10px!important;padding-top: 20px!important;">
+            id: &nbsp;<span th:text="${us.username}">cst</span><br><br> <form  action="/upUser" method="post">
+            个性签名：
+            <div class="ui input">
+              <input type="text" placeholder="请输入你的昵称" name="nickname" th:value="${us.nickname}">
+            </div><br><br>
             邮箱：<span th:text="${us.email}">863190937@qq.com</span><br><br>
             关注：<span th:text="${#arrays.length(us.following)}">80</span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -72,6 +76,8 @@
             <div class="ui input">
               <input type="text" placeholder="请输入你的个性签名" name="des" th:value="${us.des}">
             </div>
+              <input type="submit" value="修改" class="btn btn-success ui tiny red basic button">
+            </form>
           </div>
         </div>
         </div>

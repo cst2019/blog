@@ -1,7 +1,9 @@
 package com.cst.service.serviceImpl;
 
+import com.cst.dao.BlogRepository;
 import com.cst.dao.TagRespository;
 import com.cst.exception.NotFoundException;
+import com.cst.po.Blog;
 import com.cst.po.Tag;
 import com.cst.service.TagService;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +30,8 @@ public class TagServiceImpl implements TagService {
 
     @Autowired
     TagRespository tagRespository;
+    @Autowired
+    BlogRepository blogRepository;
 
     @Transactional
     @Override
@@ -99,6 +103,20 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public void deleteTag(Long id) {
-            tagRespository.deleteById(id);
+        Tag tag=tagRespository.findById(id).get();
+     List<Blog> blogs=tag.getBlogs();
+     Tag tag2=tagRespository.findById(new Long(91)).get();
+     for(Blog b:blogs){
+         List<Tag> tag1 = b.getTags();
+         tag1.remove(tag);
+         b.setTags(tag1);
+         if(tag1.size()==0){
+             tag1.add(tag2);
+         }
+         blogRepository.save(b);
+     }
+
+//      tagRespository.save(tag);
+        tagRespository.deleteById(id);
     }
 }

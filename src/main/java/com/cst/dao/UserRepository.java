@@ -15,6 +15,8 @@ public interface UserRepository  extends JpaRepository<User,Long> {
 
     User findByUsername(String username);
 
+    Page<User> findByUsername(Pageable pageable,String username);
+
     User findByEmail(String email);
 
     User findByTelephone(String telephone);
@@ -23,6 +25,11 @@ public interface UserRepository  extends JpaRepository<User,Long> {
     @Modifying
     @Query("update User u set u.avatar=?2 where u.id=?1")
     int updateAvatar(Long id,String avatar);
+
+    @Transactional
+    @Modifying
+    @Query("update User u set u.type=?2 where u.id=?1")
+    int updateType(Long id,Integer type);
 
     @Query("select u.following from User u where u.id=?1")
     Page<User> findFollowed(Long userId, Pageable pageable);

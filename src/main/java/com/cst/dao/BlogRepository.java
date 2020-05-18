@@ -53,5 +53,6 @@ public interface BlogRepository extends JpaRepository<Blog,Long>, JpaSpecificati
     @Transactional
     void deleteBlogsByTypeId(Long typeId);
 
-
+    @Transactional
+    void deleteBlogsByUserId(Long blogId);
 }
